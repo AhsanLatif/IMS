@@ -1,26 +1,20 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var dbConfig = require('.app/config/db.config');
-var indexRouter = require('.app/routes/index');
-var usersRouter = require('.app/routes/users');
+const express = require("express");
+const cors = require("cors");
+const dbConfig = require("./app/config/db.config");
+var bodyParser = require('body-parser')
 
-var app = express();
+const app = express();
 
-app.use(logger('dev'));
+var corsOptions = {
+  origin: "http://localhost:3000"
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-module.exports = app;
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
-
 db.mongoose
   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
     useNewUrlParser: true,
@@ -32,4 +26,15 @@ db.mongoose
   .catch(err => {
     console.error("Connection error", err);
     process.exit();
+  });
+
+require("./app/routes/user.routes")(app);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
+
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to bezkoder application." });
   });
