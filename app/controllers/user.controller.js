@@ -82,6 +82,9 @@ exports.updateUser = async (req, res) => {
             if (req.body.last_name) {
                 updatedUser.last_name = req.body.last_name;
             }
+            if (req.body.birthdate) {
+                updatedUser.birthdate = req.body.birthdate;
+            }
             if (req.body.password) {
                 updatedUser.password = bcrypt.hashSync(req.body.password, 8);
             }
