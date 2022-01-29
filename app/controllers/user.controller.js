@@ -4,7 +4,7 @@ const User = db.user;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-
+const redisClient = require('../config/redis.config');
 exports.signup = async (req, res) => {
     try {
         const newUser = new User({
@@ -97,4 +97,8 @@ exports.updateUser = async (req, res) => {
 
 exports.signout = async (req, res) => {
     //blacklist tokens
+    let token = req.headers["x-access-token"];
+    console.log(token);
+    await redisClient.SETEX(token, 3600, req.userId);
+    console.log(token);
 }

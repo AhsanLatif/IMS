@@ -18,4 +18,6 @@ module.exports = function (app) {
     app.get("/api/users/all", auth.authorize, controller.all);
 
     app.put("/api/users/:id", auth.authorize, controller.updateUser);
+
+    app.get("/api/signout", auth.authorize, controller.signout)
 }
