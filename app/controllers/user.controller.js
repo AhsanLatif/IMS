@@ -12,7 +12,8 @@ exports.signup = async (req, res) => {
             last_name: req.body.last_name,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
-            is_admin: req.body.is_admin
+            is_admin: req.body.is_admin,
+            birthdate: new Date(req.body.birthdate),
         });
 
         let userSave = await newUser.save();
@@ -26,7 +27,7 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     let user = await User.findOne({ email: req.body.email })
-
+    
     if (!user) {
         return res.status(404).send({ message: "User Not found." });
     }
@@ -44,7 +45,8 @@ exports.signin = async (req, res) => {
     var token = jwt.sign({ id: user.id, is_admin: user.is_admin }, config.secret, {
         expiresIn: 3600
     });
-
+    user.last_login = new Date();
+    user.save();
     res.status(200).send({
         id: user._id,
         first_name: user.first_name,

@@ -7,7 +7,7 @@ const redisClient = require('../config/redis.config');
 exports.authorize = async (req, res, next) => {
   let token = req.headers["x-access-token"];
   
-  if (!token || oldToken) {
+  if (!token) {
     return res.status(403).send({ message: "No token provided" });
   }
   let oldToken =  await redisClient.get(token);
