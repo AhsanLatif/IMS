@@ -1,5 +1,6 @@
 # IMS
 Identity Management System
+Node + Express + JWT + Redis
 
 Start docker environment: docker-compose up --build
  APIs
