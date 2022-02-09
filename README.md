@@ -74,8 +74,3 @@ Cache-Control: no-cache
 "last_name": "Latif",
 "is_admin": 1
 }
-
-----------------------MY INFO---------------------------
-Name: Ahsan Latif
-Email: ahsanlatif18@gmail.com
-Position: Backend Engineer
